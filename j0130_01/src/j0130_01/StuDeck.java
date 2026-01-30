@@ -1,0 +1,135 @@
+package j0130_01;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class StuDeck {
+	Scanner scan = new Scanner(System.in);
+	ArrayList<Stuscore> list = new ArrayList();
+	int no, kor, eng, math, total, choice, temp;
+	String name;
+	double avg;
+	String[] title = {"번호","이름","국어","영어","수학","합계","평균"};
+	String filePath = "c:/aaa/stu.txt";
+	
+	
+	// 1. 성적 입력
+	void stu_input() {
+		System.out.println((Stuscore.count+1)+" 번 학생 이름을 입력하세요.(0.이전페이지 이동)>> ");
+		name = scan.next();
+	    if(name.equals("0")) return;
+	    System.out.println("국어 점수를 입력하세요.>>");
+		kor = scan.nextInt();
+		System.out.println("영어 점수를 입력하세요.>>");
+		eng = scan.nextInt();
+		System.out.println("수학 점수를 입력하세요.>>");
+		math = scan.nextInt();
+		list.add(new Stuscore(name,kor,eng,math));
+		System.out.println(name+" 학생 성적 저장 완료!");
+		System.out.println();
+	}// stu_input
+	
+	
+	
+	// 2. 성적 출력
+	void stu_output() {
+		System.out.printf("");
+		System.out.printf("%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
+				title[0],title[1],title[2],title[3],
+				title[4],title[5],title[6]);
+		System.out.println("--------------------------------------------------------");
+		for(int i=0;i<list.size();i++) {
+			Stuscore s = list.get(i);
+			System.out.printf("%d\t%s\t%d\t%d\t%d\t%d\t%.2f\n",
+					s.getNo(),s.getName(),s.getKor(),s.getEng(),
+					s.getMath(),s.getTotal(),s.getAvg());
+		}// for
+		System.out.println();
+		
+	}// stu_output
+	
+	
+	// 4. 성적 삭제
+	void stu_delete() {
+		System.out.println("삭제하려는 학생 이름을 입력하세요.>>(0.이전페이지 이동)");
+		name = scan.next();
+	    if(name.equals("0")) return;
+	    temp = 0;
+	    for(int i = 0;i<list.size();i++) {
+	    	String search = list.get(i).getName();
+	    	if(search.equals(name)) {
+	    		temp = 1;
+	    		System.out.println(name+" 학생을 찾았습니다. 삭제하시겠습니까?(1.예, 2.아니오)");
+	    		choice = scan.nextInt();
+	    		if(choice == 1) {
+	    			list.remove(i);
+	    			System.out.println(name+" 학생 성적이 삭제되었습니다.");
+	    			System.out.println();
+	    		}
+	    		break;
+	    	}//if
+	    }// for
+	    if(temp == 0) {
+	    	System.out.println("찾고자 하는 학생이 없습니다. 다시 입력하세요.");
+	    	System.out.println();
+	    }
+		
+		
+	}// stu_delete
+	
+	
+	
+	
+	// 8. 파일 불러오기
+		void fileOpen()  {
+			try {
+				FileReader fr = new FileReader(filePath);
+				BufferedReader br = new BufferedReader(fr);
+				while(true) {
+					String line = br.readLine();
+					if(line == null) break;
+					String[] st = line.split(",");
+					no =  Integer.parseInt(st[0]);
+					name = st[1];
+					kor =  Integer.parseInt(st[2]);
+					eng =  Integer.parseInt(st[3]);
+					math =  Integer.parseInt(st[4]);
+					total =  Integer.parseInt(st[5]);
+					avg = Double.parseDouble(st[6]);
+					list.add(new Stuscore(no,name,kor,eng,math,total,avg));
+				}
+				System.out.println("파일 불러오기 완료!");
+				System.out.println();
+				
+			} catch (Exception e) {e.printStackTrace();}
+	
+		}
+	
+	// 00. 화면 출력
+	void screen() {
+		System.out.println("[ 학생 성적 프로그램 ]");
+		System.out.println("1. 성적 입력");
+		System.out.println("2. 성적 출력");
+		System.out.println("3. 성적 수정");
+		System.out.println("4. 성적 삭제");
+		System.out.println("5. 성적 검색");
+		System.out.println("6. 성적 정렬");
+		System.out.println("8. 파일 불러오기");
+		System.out.println("9. 파일 저장");
+		System.out.println("0. 프로그램 종료");
+		System.out.println("---------------------------------------");
+		System.out.println("원하는 번호를 입력하세요.>>");
+	} //screen
+	
+	
+		
+		
+	
+	
+	
+	
+}
